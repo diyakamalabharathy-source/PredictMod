@@ -1,0 +1,579 @@
+{
+    "object_id": "https://biocomputeobject.org/BCO_GSE74777_RF/DRAFT",
+    "spec_version": "https://w3id.org/ieee/ieee-2791-schema/2791object.json",
+    "etag": "",
+
+    "provenance_domain": {
+        "name": "GSE74777_RandomForest_Classification",
+        "version": "0.1.0",
+        "license": "https://spdx.org/licenses/CC-BY-4.0.html",
+        "created": "2026-02-01",
+        "modified": "2026-04-15",
+        "derived_from": [],
+        "contributors": [
+            {
+                "name": "Diya Kamalabharathy",
+                "affiliation": "HIVE Lab George Washington University Volunteership",
+                "email": "diyakamalabharathy@gmail.com",
+                "contribution": [
+                    "createdBy"
+                ],
+                "orcid": ""
+            }
+        ],
+        "review": []
+    },
+
+    "usability_domain": [
+        "This workflow performs machine-learning classification on the GSE74777 gene-expression dataset. The expression matrix is loaded into a pandas dataframe, gene identifiers contained in the ID_REF column are assigned as the dataframe index, and the matrix is transposed so that rows represent samples and columns represent genes. Temporary binary responder labels are generated randomly for the samples. The resulting features are standardized using StandardScaler and reduced to 20 principal components using PCA. The processed dataset is divided into training and testing subsets using a 75/25 split with random_state=123. A RandomForestClassifier with random_state=123 is trained on the training data. Model performance is evaluated using training and testing accuracy, a confusion matrix, a classification report, and an ROC curve with AUC."
+    ],
+
+    "description_domain": {
+        "pipeline_steps": [
+            {
+                "step_number": 1,
+                "name": "Import Python Libraries",
+                "description": "Import pandas, numpy, matplotlib, and required scikit-learn modules for data processing, visualization, train-test splitting, Random Forest classification, confusion matrix generation, classification reporting, and ROC/AUC analysis.",
+                "version": "0.1.0",
+                "prerequisite": [
+                    {
+                        "name": "pandas",
+                        "uri": {
+                            "filename": "",
+                            "access_time": "",
+                            "uri": "https://pypi.org/project/pandas/",
+                            "sha1_checksum": ""
+                        }
+                    },
+                    {
+                        "name": "numpy",
+                        "uri": {
+                            "filename": "",
+                            "access_time": "",
+                            "uri": "https://pypi.org/project/numpy/",
+                            "sha1_checksum": ""
+                        }
+                    },
+                    {
+                        "name": "matplotlib",
+                        "uri": {
+                            "filename": "",
+                            "access_time": "",
+                            "uri": "https://pypi.org/project/matplotlib/",
+                            "sha1_checksum": ""
+                        }
+                    },
+                    {
+                        "name": "scikit-learn",
+                        "uri": {
+                            "filename": "",
+                            "access_time": "",
+                            "uri": "https://scikit-learn.org/",
+                            "sha1_checksum": ""
+                        }
+                    }
+                ],
+                "input_list": [],
+                "output_list": []
+            },
+
+            {
+                "step_number": 2,
+                "name": "Load GSE74777 Expression Matrix",
+                "description": "Load the GSE74777_series_matrix.csv gene-expression dataset into a pandas dataframe using pandas.read_csv.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "GSE74777_series_matrix.csv",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "train_table",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 3,
+                "name": "Set Gene Identifiers as Index",
+                "description": "Set the ID_REF column containing gene identifiers as the index of the pandas dataframe.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "train_table",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "gene_indexed_expression_matrix",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 4,
+                "name": "Transpose Expression Matrix",
+                "description": "Transpose the gene-expression matrix so that rows represent samples and columns represent genes.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "gene_indexed_expression_matrix",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "sample_by_gene_expression_matrix",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 5,
+                "name": "Assign Temporary Responder Labels",
+                "description": "Generate temporary binary responder labels using numpy.random.randint(0,2,len(train_table)). These labels are randomly assigned and are currently being used for workflow development and testing rather than representing experimentally determined biological responder status.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "sample_by_gene_expression_matrix",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "X_features",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "y_responder_labels",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 6,
+                "name": "Standardize Features",
+                "description": "Standardize gene-expression features using sklearn.preprocessing.StandardScaler. The scaler is fit and applied to the complete feature matrix before the train-test split.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "X_features",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "X_scaled",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 7,
+                "name": "Principal Component Analysis",
+                "description": "Apply Principal Component Analysis to the standardized feature matrix using 20 principal components.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "X_scaled",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "X_pca",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 8,
+                "name": "Train-Test Split",
+                "description": "Split the PCA-transformed data into training and testing subsets using a 75/25 split and random_state=123.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "X_pca",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "y_responder_labels",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "X_train",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "X_test",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "y_train",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "y_test",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 9,
+                "name": "Train Random Forest Classifier",
+                "description": "Train a RandomForestClassifier using the training data. The classifier is initialized with random_state=123 and otherwise uses the default scikit-learn Random Forest parameters.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "X_train",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "y_train",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "RandomForestClassifier",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 10,
+                "name": "Evaluate Classification Performance",
+                "description": "Evaluate the trained Random Forest classifier using training accuracy, testing accuracy, a confusion matrix, and a classification report generated from predictions on the testing dataset.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "RandomForestClassifier",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "X_test",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "y_test",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "training_accuracy",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "testing_accuracy",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "confusion_matrix",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "classification_report",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            },
+
+            {
+                "step_number": 11,
+                "name": "Generate ROC Curve and AUC",
+                "description": "Generate probability predictions for the positive class using RandomForestClassifier.predict_proba. Calculate the false-positive rate and true-positive rate using roc_curve and calculate the area under the ROC curve using auc. Plot the resulting ROC curve.",
+                "version": "0.1.0",
+                "input_list": [
+                    {
+                        "filename": "RandomForestClassifier",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "X_test",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "y_test",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ],
+                "output_list": [
+                    {
+                        "filename": "ROC_curve",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    },
+                    {
+                        "filename": "ROC_AUC",
+                        "access_time": "",
+                        "uri": "TBD",
+                        "sha1_checksum": ""
+                    }
+                ]
+            }
+        ],
+
+        "keywords": [
+            "machine learning",
+            "gene expression",
+            "GSE74777",
+            "Random Forest",
+            "PCA",
+            "StandardScaler",
+            "classification",
+            "responder prediction",
+            "bioinformatics"
+        ],
+
+        "platform": [
+            "TBD"
+        ]
+    },
+
+    "parametric_domain": [
+        {
+            "step": "5",
+            "param": "label_generation",
+            "value": "np.random.randint(0,2,len(train_table))"
+        },
+        {
+            "step": "7",
+            "param": "PCA",
+            "value": "n_components=20"
+        },
+        {
+            "step": "8",
+            "param": "train_test_split",
+            "value": "test_size=0.25"
+        },
+        {
+            "step": "8",
+            "param": "train_test_split",
+            "value": "random_state=123"
+        },
+        {
+            "step": "9",
+            "param": "RandomForestClassifier",
+            "value": "random_state=123"
+        }
+    ],
+
+    "io_domain": {
+        "input_subdomain": [
+            {
+                "uri": {
+                    "filename": "GSE74777_series_matrix.csv",
+                    "uri": "TBD"
+                }
+            }
+        ],
+
+        "output_subdomain": [
+            {
+                "mediatype": "Machine Learning Model",
+                "uri": {
+                    "filename": "RandomForestClassifier",
+                    "uri": "TBD"
+                }
+            },
+            {
+                "mediatype": "Confusion Matrix",
+                "uri": {
+                    "filename": "confusion_matrix",
+                    "uri": "TBD"
+                }
+            },
+            {
+                "mediatype": "Classification Report",
+                "uri": {
+                    "filename": "classification_report",
+                    "uri": "TBD"
+                }
+            },
+            {
+                "mediatype": "ROC Curve",
+                "uri": {
+                    "filename": "ROC_curve",
+                    "uri": "TBD"
+                }
+            },
+            {
+                "mediatype": "AUC Score",
+                "uri": {
+                    "filename": "ROC_AUC",
+                    "uri": "TBD"
+                }
+            }
+        ]
+    },
+
+    "execution_domain": {
+        "script": [
+            {
+                "filename": "GSE74777_RandomForest.py",
+                "uri": "TBD",
+                "access_time": "",
+                "sha1_checksum": ""
+            }
+        ],
+
+        "script_driver": "Python",
+
+        "software_prerequisites": [
+            {
+                "name": "Python",
+                "version": "5",
+                "uri": {
+                    "filename": "",
+                    "uri": "https://www.python.org/downloads/",
+                    "access_time": "",
+                    "sha1_checksum": ""
+                }
+            },
+            {
+                "name": "pandas",
+                "version": "5",
+                "uri": {
+                    "filename": "",
+                    "uri": "https://pypi.org/project/pandas/",
+                    "access_time": "",
+                    "sha1_checksum": ""
+                }
+            },
+            {
+                "name": "numpy",
+                "version": "5",
+                "uri": {
+                    "filename": "",
+                    "uri": "https://pypi.org/project/numpy/",
+                    "access_time": "",
+                    "sha1_checksum": ""
+                }
+            },
+            {
+                "name": "matplotlib",
+                "version": "5",
+                "uri": {
+                    "filename": "",
+                    "uri": "https://pypi.org/project/matplotlib/",
+                    "access_time": "",
+                    "sha1_checksum": ""
+                }
+            },
+            {
+                "name": "scikit-learn",
+                "version": "5",
+                "uri": {
+                    "filename": "",
+                    "uri": "https://scikit-learn.org/",
+                    "access_time": "",
+                    "sha1_checksum": ""
+                }
+            }
+        ],
+
+        "external_data_endpoints": [],
+
+        "environment_variables": {
+            "Number_of_cores": "TBD",
+            "Available_memory": "TBD"
+        }
+    },
+
+    "extension_domain": [],
+
+    "error_domain": {
+        "empirical_error": {
+            "empirical_error": {
+                "Training Accuracy": "TBD",
+                "Testing Accuracy": "TBD",
+                "AUC": "0.55"
+            }
+        },
+
+        "algorithmic_error": {
+            "algorithmic_error": {
+                "Error Rate": "TBD"
+            }
+        }
+    }
+}
