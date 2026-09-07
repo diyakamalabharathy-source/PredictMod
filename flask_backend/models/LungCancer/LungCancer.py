@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import joblib
 #Importing necessary modules from sklearn
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
@@ -11,8 +12,7 @@ print("Ready to Go")
 
 #Importing Dataset GSE74777_series_matrix.txt.gz
 # Tab-separated file
-train_table = pd.read_csv(r"C:\Users\cpkbh\OneDrive\Desktop\PredictMod\GSE74777_series_matrix.csv"
-)  
+train_table = pd.read_csv("GSE74777_series_matrix.csv")
 # ignores lines starting with !
 print("Table Loaded")
 print(train_table.head())
@@ -51,16 +51,19 @@ print("Ready to Go")
 
 #Viewing performance metrics of Random Forest Classifier
 
-RF = RandomForestClassifier(random_state=123)
-RF.fit(X_train,y_train)
-print(f'RandomForestClassifier train score: {RF.score(X_train,y_train)}')
-print(f'RandomForestClassifier test score:  {RF.score(X_test,y_test)}')
-print(confusion_matrix(y_test, RF.predict(X_test)))
-print(classification_report(y_test, RF.predict(X_test)))
+rf = RandomForestClassifier(random_state=123)
+rf.fit(X_train,y_train)
+print(f'RandomForestClassifier train score: {rf.score(X_train,y_train)}')
+print(f'RandomForestClassifier test score:  {rf.score(X_test,y_test)}')
+print(confusion_matrix(y_test, rf.predict(X_test)))
+print(classification_report(y_test, rf.predict(X_test)))
 from sklearn.metrics import ConfusionMatrixDisplay
 
 # Get predictions ONCE (cleaner)
-y_pred = RF.predict(X_test)
+y_pred = rf.predict(X_test)
+
+data = {'classifier': rf, 'features': list(X.columns)}
+joblib.dump(data, 'LungCancer_classifier_and_features.pickle') 
 
 # Plot confusion matrix
 ConfusionMatrixDisplay.from_predictions(
@@ -78,7 +81,7 @@ plt.show()
 from sklearn.metrics import roc_curve, auc
 
 # Get probability predictions (NOT just 0/1 labels)
-y_probs = RF.predict_proba(X_test)[:, 1]
+y_probs = rf.predict_proba(X_test)[:, 1]
 
 # Compute ROC curve
 fpr, tpr, thresholds = roc_curve(y_test, y_probs)
