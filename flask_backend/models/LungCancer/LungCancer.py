@@ -32,6 +32,13 @@ train_table["Responder"] = np.random.randint(0,2,len(train_table))
 X = train_table.drop(["Responder"], axis=1)
 y = train_table["Responder"]
 
+print(train_table.head(2))
+train_table.head(1).to_csv("train_table_head.csv", index=False)
+print('Printing json....')
+train_table.head(2).to_json("testInput.json", orient='records')
+
+train_table =train_table.iloc[2:].reset_index(drop=True)  # drop first two rows (metadata)
+
 # ---- Scale features ----
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
@@ -48,9 +55,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 print("Ready to Go")
-
+print(X_test[0,:])
 #Viewing performance metrics of Random Forest Classifier
-
 rf = RandomForestClassifier(random_state=123)
 rf.fit(X_train,y_train)
 print(f'RandomForestClassifier train score: {rf.score(X_train,y_train)}')
